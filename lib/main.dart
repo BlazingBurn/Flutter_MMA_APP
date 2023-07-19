@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red, // Modifier la couleur en rouge
       ),
+<<<<<<< HEAD
       home: Scaffold(
         appBar: AppBar(
           title: const Text('UFC Stats'), // Titre de l'AppBar
@@ -63,6 +64,10 @@ class MyApp extends StatelessWidget {
                 ],
               ),
             ],
+=======
+      home: const Text(
+          'Marc est un trisomique, raciste, misogine, obèse, etc...'
+>>>>>>> 7f3b57876ceeb88193275f2ea0735b647822ee27
           ),
         ),
       ),
