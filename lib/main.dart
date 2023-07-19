@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const Text(
-          'Marc est un trisomique'
+          'Marc est un trisomique, raciste, misogine, obèse, etc...'
           ),
     );
   }
