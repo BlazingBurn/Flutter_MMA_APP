@@ -61,15 +61,14 @@ class _EventsState extends State<Events> {
         // Wrap the map inside a list to match the expected format
         return [decodedData];
       } else {
-        print('Invalid data format. Expected List<dynamic> or Map<String, dynamic>, but got ${decodedData.runtimeType}');
+        print(
+            'Invalid data format. Expected List<dynamic> or Map<String, dynamic>, but got ${decodedData.runtimeType}');
         throw Exception('Invalid event details data format');
       }
     } else {
       throw Exception('Failed to load event details');
     }
   }
-
-
 
   String formatDateTime(String dateString) {
     final dateTime = DateTime.parse(dateString);
@@ -102,27 +101,27 @@ class _EventsState extends State<Events> {
 
   Widget _events(BuildContext context) {
     return ListView.builder(
-        itemCount: eventData.length,
-        itemBuilder: (context, index) {
-          final event = eventData[index];
-          final eventId = event['EventId'];
-          final eventName = event['Name'];
-          final eventDateTimeString = event['DateTime'];
-          final isEventSelected = selectedEventId == eventId;
+      itemCount: eventData.length,
+      itemBuilder: (context, index) {
+        final event = eventData[index];
+        final eventId = event['EventId'];
+        final eventName = event['Name'];
+        final eventDateTimeString = event['DateTime'];
+        final isEventSelected = selectedEventId == eventId;
 
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: EventCard(
-              eventId: eventId,
-              eventName: eventName,
-              eventDateTime: formatDateTime(eventDateTimeString),
-              isExpanded: isEventSelected,
-              onToggle: () => _toggleEventDetails(eventId),
-              eventDetails: eventDetailsMap[eventId],
-            ),
-          );
-        },
-      );
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: EventCard(
+            eventId: eventId,
+            eventName: eventName,
+            eventDateTime: formatDateTime(eventDateTimeString),
+            isExpanded: isEventSelected,
+            onToggle: () => _toggleEventDetails(eventId),
+            eventDetails: eventDetailsMap[eventId],
+          ),
+        );
+      },
+    );
   }
 }
 
@@ -163,28 +162,47 @@ class EventCard extends StatelessWidget {
                   child: Column(
                     children: [
                       Text('FightID: ${fight['FightId']}'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  '${fighter1['FirstName']} ${fighter1['LastName']}',
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  '${fighter1['PreFightWins']} - ${fighter1['PreFightLosses']} - ${fighter1['PreFightDraws']} - ${fighter1['PreFightNoContests']}',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Text(
+                            'VS',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            child: Column(
+                              children: [
+                                Text(
+                                  '${fighter2['FirstName']} ${fighter2['LastName']}',
+                                  textAlign: TextAlign.center,
+                                ),
+                                Text(
+                                  '${fighter2['PreFightWins']} - ${fighter2['PreFightLosses']} - ${fighter2['PreFightDraws']} - ${fighter2['PreFightNoContests']}',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                       Text(
-                          'Fighter 1: ${fighter1['FirstName']} ${fighter1['LastName']}'),
-                      Text(
-                          'Fighter 2: ${fighter2['FirstName']} ${fighter2['LastName']}'),
-                      Text(
-                          'PreFightWins (Fighter 1): ${fighter1['PreFightWins']}'),
-                      Text(
-                          'PreFightWins (Fighter 2): ${fighter2['PreFightWins']}'),
-                      Text(
-                          'PreFightLosses (Fighter 1): ${fighter1['PreFightLosses']}'),
-                      Text(
-                          'PreFightLosses (Fighter 2): ${fighter2['PreFightLosses']}'),
-                      Text(
-                          'PreFightDraws (Fighter 1): ${fighter1['PreFightDraws']}'),
-                      Text(
-                          'PreFightDraws (Fighter 2): ${fighter2['PreFightDraws']}'),
-                      Text(
-                          'PreFightNoContests (Fighter 1): ${fighter1['PreFightNoContests']}'),
-                      Text(
-                          'PreFightNoContests (Fighter 2): ${fighter2['PreFightNoContests']}'),
-                      Text(
-                          'Winner: ${fighter1['Winner'] == true ? '${fighter1['FirstName']} ${fighter1['LastName']}' : (fighter2['Winner'] == true ? '${fighter2['FirstName']} ${fighter2['LastName']}' : 'No winner yet')}'),
+                          'Winner: ${fighter1['Winner'] == true ? '${fighter1['FirstName']} ${fighter1['LastName']}' : (fighter2['Winner'] == true ? '${fighter2['FirstName']} ${fighter2['LastName']}' : 'No winner yet')}',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                     ],
                   ),
                 );
