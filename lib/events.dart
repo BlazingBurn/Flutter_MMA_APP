@@ -1,60 +1,174 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_mma_app/scaffoldGeneral.dart';
+import 'package:intl/intl.dart';
 
-class Events extends StatelessWidget {
+class Events extends StatefulWidget {
   const Events({Key? key}) : super(key: key);
 
-  Future<List<dynamic>> _fetchEventData() async {
+  @override
+  _EventsState createState() => _EventsState();
+}
+
+class _EventsState extends State<Events> {
+  List<dynamic> eventData = [];
+  int? selectedEventId;
+  Map<int, List<dynamic>> eventDetailsMap = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchEventData();
+  }
+
+  Future<void> _fetchEventData() async {
     final response = await http.get(
       Uri.parse(
           'https://api.sportsdata.io/v3/mma/scores/json/Schedule/UFC/2023?key=ec5838ef36b54cccae0a603380c1544a'),
     );
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      setState(() {
+        eventData = jsonDecode(response.body);
+      });
     } else {
       throw Exception('Failed to load data');
     }
   }
 
+  Future<List<dynamic>> _fetchEventDetails(int eventId) async {
+    final response = await http.get(
+      Uri.parse(
+          'https://api.sportsdata.io/v3/mma/scores/json/Event/$eventId?key=ec5838ef36b54cccae0a603380c1544a'),
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load event details');
+    }
+  }
+
+  String formatDateTime(String dateString) {
+    final dateTime = DateTime.parse(dateString);
+    return DateFormat('EEE, MMM d, y - h:mm a').format(dateTime);
+  }
+
+  void _toggleEventDetails(int eventId) async {
+    if (selectedEventId == eventId) {
+      setState(() {
+        selectedEventId = null;
+      });
+    } else {
+      setState(() {
+        selectedEventId = eventId;
+      });
+
+      if (!eventDetailsMap.containsKey(eventId)) {
+        final eventDetails = await _fetchEventDetails(eventId);
+        setState(() {
+          eventDetailsMap[eventId] = eventDetails;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ScaffoldGeneral(
-      redirection: "/",
-      widget: FutureBuilder<List<dynamic>>(
-        future: _fetchEventData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else {
-            final eventData = snapshot.data;
-            return ListView.builder(
-              itemCount: eventData?.length ?? 0,
-              itemBuilder: (context, index) {
-                final event = eventData?[index];
-                final eventId = event['EventID'];
-                final eventName = event['Name'];
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('UFC STATS'),
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+        itemCount: eventData.length,
+        itemBuilder: (context, index) {
+          final event = eventData[index];
+          final eventId = event['EventId'];
+          final eventName = event['Name'];
+          final eventDateTimeString = event['DateTime'];
+          final isEventSelected = selectedEventId == eventId;
 
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: EventCard(
+              eventId: eventId,
+              eventName: eventName,
+              eventDateTime: formatDateTime(eventDateTimeString),
+              isExpanded: isEventSelected,
+              onToggle: () => _toggleEventDetails(eventId),
+              eventDetails: eventDetailsMap[eventId],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class EventCard extends StatelessWidget {
+  final int eventId;
+  final String eventName;
+  final String eventDateTime;
+  final bool isExpanded;
+  final VoidCallback onToggle;
+  final List<dynamic>? eventDetails;
+
+  const EventCard({
+    required this.eventId,
+    required this.eventName,
+    required this.eventDateTime,
+    required this.isExpanded,
+    required this.onToggle,
+    this.eventDetails,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(eventName),
+            subtitle: Text('EventID: $eventId\nDate/Time: $eventDateTime'),
+            onTap: onToggle,
+          ),
+          if (isExpanded && eventDetails != null)
+            Column(
+              children: eventDetails![0]['Fights'].map<Widget>((fight) {
+                final fighter1 = fight['Fighters'][0];
+                final fighter2 = fight['Fighters'][1];
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    child: ListTile(
-                      title: Text(eventName),
-                      subtitle: Text('EventID: $eventId'),
-                    ),
+                  child: Column(
+                    children: [
+                      Text('FightID: ${fight['FightId']}'),
+                      Text(
+                          'Fighter 1: ${fighter1['FirstName']} ${fighter1['LastName']}'),
+                      Text(
+                          'Fighter 2: ${fighter2['FirstName']} ${fighter2['LastName']}'),
+                      Text(
+                          'PreFightWins (Fighter 1): ${fighter1['PreFightWins']}'),
+                      Text(
+                          'PreFightWins (Fighter 2): ${fighter2['PreFightWins']}'),
+                      Text(
+                          'PreFightLosses (Fighter 1): ${fighter1['PreFightLosses']}'),
+                      Text(
+                          'PreFightLosses (Fighter 2): ${fighter2['PreFightLosses']}'),
+                      Text(
+                          'PreFightDraws (Fighter 1): ${fighter1['PreFightDraws']}'),
+                      Text(
+                          'PreFightDraws (Fighter 2): ${fighter2['PreFightDraws']}'),
+                      Text(
+                          'PreFightNoContests (Fighter 1): ${fighter1['PreFightNoContests']}'),
+                      Text(
+                          'PreFightNoContests (Fighter 2): ${fighter2['PreFightNoContests']}'),
+                      Text(
+                          'Winner: ${fighter1['Winner'] == true ? '${fighter1['FirstName']} ${fighter1['LastName']}' : (fighter2['Winner'] == true ? '${fighter2['FirstName']} ${fighter2['LastName']}' : 'No winner yet')}'),
+                    ],
                   ),
                 );
-              },
-            );
-          }
-        },
+              }).toList(),
+            ),
+        ],
       ),
     );
   }
