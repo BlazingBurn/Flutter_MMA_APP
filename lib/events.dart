@@ -36,18 +36,6 @@ class _EventsState extends State<Events> {
     }
   }
 
-  // Future<List<dynamic>> _fetchEventDetails(int eventId) async {
-  //   final response = await http.get(
-  //     Uri.parse(
-  //         'https://api.sportsdata.io/v3/mma/scores/json/Event/$eventId?key=ec5838ef36b54cccae0a603380c1544a'),
-  //   );
-  //   if (response.statusCode == 200) {
-  //     return jsonDecode(response.body);
-  //   } else {
-  //     throw Exception('Failed to load event details');
-  //   }
-  // }
-
   Future<List<dynamic>> _fetchEventDetails(int eventId) async {
     final response = await http.get(
       Uri.parse(
@@ -155,6 +143,10 @@ class EventCard extends StatelessWidget {
           if (isExpanded && eventDetails != null)
             Column(
               children: eventDetails![0]['Fights'].map<Widget>((fight) {
+                if (fight['Fighters'].length != 2) {
+                  print('Invalid fight data: ${fight.toString()}');
+                  return SizedBox.shrink(); // Ignore invalid fight data
+                }
                 final fighter1 = fight['Fighters'][0];
                 final fighter2 = fight['Fighters'][1];
                 return Padding(
@@ -182,7 +174,9 @@ class EventCard extends StatelessWidget {
                           const Text(
                             'VS',
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           Expanded(
                             child: Column(
@@ -201,13 +195,17 @@ class EventCard extends StatelessWidget {
                         ],
                       ),
                       Text(
-                          'Winner: ${fighter1['Winner'] == true ? '${fighter1['FirstName']} ${fighter1['LastName']}' : (fighter2['Winner'] == true ? '${fighter2['FirstName']} ${fighter2['LastName']}' : 'No winner yet')}',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                        'Winner: ${fighter1['Winner'] == true ? '${fighter1['FirstName']} ${fighter1['LastName']}' : (fighter2['Winner'] == true ? '${fighter2['FirstName']} ${fighter2['LastName']}' : 'No winner yet')}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Divider(), // Le Divider pour séparer les combats
                     ],
                   ),
                 );
               }).toList(),
             ),
+          if (isExpanded && (eventDetails == null || eventDetails!.isEmpty))
+            Text('loading...'), // Gérer le cas où eventDetails est vide
         ],
       ),
     );
