@@ -18,14 +18,18 @@ class Home extends StatelessWidget {
           title: const Text('UFC STATS'), // Titre de l'AppBar
           centerTitle: true, // Centrer le titre de l'AppBar
         ),
-        body: Column(
+        body: SingleChildScrollView(
+              child: Padding(padding: const EdgeInsets.only(bottom: 30), // Add space at the bottom
+              child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Image.asset(
-              'assets/images/Ciryl-Gane-UFC.png', // Chemin de l'image
-              fit: BoxFit.cover, // Ajuster la taille de l'image pour couvrir toute la largeur
-            ),
-            const SizedBox(height: 120), // Espacement entre l'image et le reste en bas
+                Image.asset(
+                  'assets/images/mc.jpg', // Chemin de l'image
+                  fit: BoxFit.fill,
+                  height: 250,
+                  // Ajuster la taille de l'image pour couvrir toute la largeur
+                ),
+            const SizedBox(height: 30), // Espacement entre l'image et le reste en bas
             Image.asset(
               'assets/images/logo.png',
               width: 100,
@@ -69,6 +73,8 @@ class Home extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      ),
       ),
     );
 

@@ -45,48 +45,6 @@ class _MyFightersState extends State<Fighters> {
     );
   }
 
-  // Widget _fightersTest() {
-  //   return FutureBuilder<List<dynamic>>(
-  //     future: _fetchEventData(),
-  //     builder: (context, snapshot) {
-  //       if (snapshot.connectionState == ConnectionState.waiting) {
-  //         return const Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       } else if (snapshot.hasError) {
-  //         return Center(
-  //           child: Text('Error: ${snapshot.error}'),
-  //         );
-  //       } else {
-  //         final fightersData = snapshot.data;
-  //         return ListView.builder(
-  //           itemCount: fightersData?.length ?? 0,
-  //           itemBuilder: (context, index) {
-  //             final fighters = fightersData?[index];
-  //             final int fighterId = fighters['FighterId'];
-  //             final String fighterFirstName = fighters['FirstName'];
-  //             // final String fighterLastName = fighters['LastName'];
-  //             // final String fighterNickName = fighters['NickName'];
-  //             // final String fighterWins = fighters['Wins'];
-  //             // final String fighterLosses = fighters['Losses'];
-  //             // final String fighterDraws = fighters['Draws'];
-  //
-  //             return Padding(
-  //               padding: const EdgeInsets.all(8.0),
-  //               child: Card(
-  //                 child: ListTile(
-  //                   title: Text(fighterId.toString()),
-  //                   subtitle: Text('FighterFistName: $fighterFirstName'),
-  //                 ),
-  //               ),
-  //             );
-  //           },
-  //         );
-  //       }
-  //     },
-  //   );
-  // }
-
   Widget _fightersTest() {
     return FutureBuilder<List<dynamic>>(
       future: fightersList,
@@ -130,12 +88,12 @@ class _MyFightersState extends State<Fighters> {
                   itemBuilder: (context, index) {
                     final fighters = fightersData?[index];
                     // final int fighterId = fighters['FighterId'];
-                    final String fighterFirstName = fighters['FirstName'];
-                    final String fighterLastName = fighters['LastName'];
-                    final String fighterNickName = fighters['Nickname'];
-                    final int fighterWins = fighters['Wins'];
-                    final int fighterLosses = fighters['Losses'];
-                    final int fighterDraws = fighters['Draws'];
+                    final String? fighterFirstName = fighters['FirstName'] as String?;
+                    final String? fighterLastName = fighters['LastName'] as String?;
+                    final String? fighterNickName = fighters['Nickname'] as String?;
+                    final int fighterWins = fighters['Wins'] as int? ?? 0;
+                    final int fighterLosses = fighters['Losses'] as int? ?? 0;
+                    final int fighterDraws = fighters['Draws'] as int? ?? 0;
 
                     return Padding(
                       padding: const EdgeInsets.symmetric(
@@ -165,7 +123,7 @@ class _MyFightersState extends State<Fighters> {
                                     children: [
                                       Center(
                                         child: Text(
-                                          '$fighterFirstName $fighterLastName',
+                                          '${fighterFirstName ?? '-'} ${fighterLastName ?? '-'}',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 24,
@@ -175,7 +133,7 @@ class _MyFightersState extends State<Fighters> {
                                       const SizedBox(height: 4),
                                       Center(
                                         child: Text(
-                                          fighterNickName,
+                                          fighterNickName ?? '',
                                           style: const TextStyle(
                                             fontSize: 18,
                                             color: Color.fromARGB(
@@ -192,7 +150,7 @@ class _MyFightersState extends State<Fighters> {
                                             child: Text(
                                             'Wins: $fighterWins | Losses: $fighterLosses | Draws: $fighterDraws',
                                             style: const TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
