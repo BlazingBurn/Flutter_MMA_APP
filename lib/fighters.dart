@@ -13,11 +13,13 @@ class Fighters extends StatefulWidget {
 
 class _MyFightersState extends State<Fighters> {
   late Future<List<dynamic>> fightersList;
+  late Future<List<dynamic>> fightersListOrigin;
 
   @override
   void initState() {
     super.initState();
-    fightersList = _fetchEventData();
+    fightersListOrigin = _fetchEventData();
+    fightersList = fightersListOrigin;
   }
 
   Future<List<dynamic>> _fetchEventData() async {
@@ -171,11 +173,11 @@ class _MyFightersState extends State<Fighters> {
 void _filterFightersList(String query) {
   if (query.isEmpty) {
     setState(() {
-      fightersList = _fetchEventData();
+      fightersList = fightersListOrigin;
     });
   } else {
     setState(() {
-      fightersList = _fetchEventData().then((fightersData) => fightersData
+      fightersList = fightersListOrigin.then((fightersData) => fightersData
           .where((fighter) {
             final String? firstName = fighter['FirstName'] as String?;
             final String? lastName = fighter['LastName'] as String?;
