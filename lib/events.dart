@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mma_app/scaffoldGeneral.dart';
 
 class Events extends StatelessWidget {
 
@@ -6,22 +7,13 @@ class Events extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'UFC STATS',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-      home: Scaffold(
-          appBar: AppBar(
-            title: const Text('UFC STATS'), // Titre de l'AppBar
-            centerTitle: true, // Centrer le titre de l'AppBar
-          ),
-          body: Center(
-            child:
-              Text("Events"),
-          )
-      ),
-    );
+    return ScaffoldGeneral(redirection: "/", widget: _events());
   }
 
+  Widget _events() {
+    return const Center(
+      child:
+      Text("Events"),
+    );
+  }
 }
