@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mma_app/scaffoldGeneral.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -35,17 +36,40 @@ class _EventsState extends State<Events> {
     }
   }
 
+  // Future<List<dynamic>> _fetchEventDetails(int eventId) async {
+  //   final response = await http.get(
+  //     Uri.parse(
+  //         'https://api.sportsdata.io/v3/mma/scores/json/Event/$eventId?key=ec5838ef36b54cccae0a603380c1544a'),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     return jsonDecode(response.body);
+  //   } else {
+  //     throw Exception('Failed to load event details');
+  //   }
+  // }
+
   Future<List<dynamic>> _fetchEventDetails(int eventId) async {
     final response = await http.get(
       Uri.parse(
           'https://api.sportsdata.io/v3/mma/scores/json/Event/$eventId?key=ec5838ef36b54cccae0a603380c1544a'),
     );
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      final dynamic decodedData = jsonDecode(response.body);
+      if (decodedData is List<dynamic>) {
+        return decodedData;
+      } else if (decodedData is Map<String, dynamic>) {
+        // Wrap the map inside a list to match the expected format
+        return [decodedData];
+      } else {
+        print('Invalid data format. Expected List<dynamic> or Map<String, dynamic>, but got ${decodedData.runtimeType}');
+        throw Exception('Invalid event details data format');
+      }
     } else {
       throw Exception('Failed to load event details');
     }
   }
+
+
 
   String formatDateTime(String dateString) {
     final dateTime = DateTime.parse(dateString);
@@ -73,12 +97,11 @@ class _EventsState extends State<Events> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('UFC STATS'),
-        centerTitle: true,
-      ),
-      body: ListView.builder(
+    return ScaffoldGeneral(redirection: "/", widget: _events(context));
+  }
+
+  Widget _events(BuildContext context) {
+    return ListView.builder(
         itemCount: eventData.length,
         itemBuilder: (context, index) {
           final event = eventData[index];
@@ -99,8 +122,7 @@ class _EventsState extends State<Events> {
             ),
           );
         },
-      ),
-    );
+      );
   }
 }
 
