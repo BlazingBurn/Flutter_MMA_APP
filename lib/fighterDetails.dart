@@ -73,28 +73,20 @@ class _FighterDetailsState extends State<FighterDetails> {
           final double height = fighterData?['Height'] ?? 0.0;
           final double weight = fighterData?['Weight'] ?? 0.0;
           final String weightClass = fighterData?['WeightClass'] ?? '';
-          final int technicalKnockouts =
-              fighterData?['TechnicalKnockouts'] ?? 0;
-          final int technicalKnockoutLosses =
-              fighterData?['TechnicalKnockoutLosses'] ?? 0;
+          final int technicalKnockouts = fighterData?['TechnicalKnockouts'] ?? 0;
+          final int technicalKnockoutLosses = fighterData?['TechnicalKnockoutLosses'] ?? 0;
           final int submissions = fighterData?['Submissions'] ?? 0;
           final int submissionLosses = fighterData?['SubmissionLosses'] ?? 0;
           final int titleWins = fighterData?['TitleWins'] ?? 0;
           final int titleLosses = fighterData?['TitleLosses'] ?? 0;
           final int titleDraws = fighterData?['TitleDraws'] ?? 0;
-          final double sigStrikesLandedPerMinute =
-              fighterData?['SigStrikesLandedPerMinute'] ?? 0.0;
-          final double sigStrikeAccuracy =
-              fighterData?['SigStrikeAccuracy'] ?? 0.0;
-          final double takedownAverage = fighterData?['TakedownAverage'] ?? 0.0;
-          final double submissionAverage =
-              fighterData?['SubmissionAverage'] ?? 0.0;
-          final double knockoutPercentage =
-              fighterData?['KnockoutPercentage'] ?? 0.0;
-          final double technicalKnockoutPercentage =
-              fighterData?['TechnicalKnockoutPercentage'] ?? 0.0;
-          final double decisionPercentage =
-              fighterData?['DecisionPercentage'] ?? 0.0;
+          final double sigStrikesLandedPerMinute = fighterData?['CareerStats']?['SigStrikesLandedPerMinute'] ?? 0.0;
+          final double sigStrikeAccuracy = fighterData?['CareerStats']?['SigStrikeAccuracy'] ?? 0.0;
+          final double takedownAverage = fighterData?['CareerStats']?['TakedownAverage'] ?? 0.0;
+          final double submissionAverage = fighterData?['CareerStats']?['SubmissionAverage'] ?? 0.0;
+          final double knockoutPercentage = fighterData?['CareerStats']?['KnockoutPercentage'] ?? 0.0;
+          final double technicalKnockoutPercentage = fighterData?['CareerStats']?['TechnicalKnockoutPercentage'] ?? 0.0;
+          final double decisionPercentage = fighterData?['CareerStats']?['DecisionPercentage'] ?? 0.0;
 
           return SingleChildScrollView(
             child: Column(
@@ -405,7 +397,7 @@ Padding(
               value == 0 ? '-' : value.toString(),
               style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 16), // Agrandir la taille du texte
+                  fontSize: 14), // Agrandir la taille du texte
             ),
           ),
         ],
