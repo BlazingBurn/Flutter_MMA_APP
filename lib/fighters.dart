@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mma_app/scaffoldGeneral.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'fighterDetails.dart';
 import 'fighterSearch.dart';
 import 'fighter_model.dart';
 
@@ -20,8 +22,7 @@ class _MyFightersState extends State<Fighters> {
   @override
   void initState() {
     super.initState();
-    fightersListOrigin = _fetchEventData();
-    fightersList = fightersListOrigin;
+    fightersList = _fetchEventData();
   }
 
   Future<List<FighterModel>> _fetchEventData() async {
@@ -29,6 +30,7 @@ class _MyFightersState extends State<Fighters> {
       Uri.parse(
           'https://api.sportsdata.io/v3/mma/scores/json/Fighters?key=01dc155fc0e9412d9078229fc6d9baea'),
     );
+
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body);
       List<FighterModel> fighters =
@@ -102,67 +104,83 @@ class _MyFightersState extends State<Fighters> {
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 16),
                           child: Center(
-                            child: Card(
-                              elevation: 4,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/ali.webp',
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover,
-                                    ),
-                                    const SizedBox(width: 16),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Center(
-                                            child: Text(
-                                              '${fighters?.firstName} ${fighters?.lastName}',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 24,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Center(
-                                            child: Text(
-                                              fighters!.nickName,
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Color.fromARGB(
-                                                    255, 190, 27, 27),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Column(
+                            child: MouseRegion(
+
+                              cursor: SystemMouseCursors.click,
+                              // Curseur de type 'cliquable'
+                              child: GestureDetector(
+                                onTap: () =>
+                                    GoRouter.of(context).go(
+                                        "/fighters/${fighters.fighterId}"),
+                                child: Card(
+                                  elevation: 4,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          'assets/images/ali.webp',
+                                          width: 100,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Expanded(
+                                          child: Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               Center(
                                                 child: Text(
-                                                  'Wins: ${fighters.wins} | Losses: ${fighters.losses} | Draws: ${fighters.draws}',
+                                                  '${fighters
+                                                      ?.firstName} ${fighters
+                                                      ?.lastName}',
                                                   style: const TextStyle(
-                                                    fontSize: 14,
                                                     fontWeight: FontWeight.bold,
+                                                    fontSize: 24,
                                                   ),
                                                 ),
                                               ),
+                                              const SizedBox(height: 4),
+                                              Center(
+                                                child: Text(
+                                                  fighters!.nickName,
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: Color.fromARGB(
+                                                        255, 190, 27, 27),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                                children: [
+                                                  Center(
+                                                    child: Text(
+                                                      'Wins: ${fighters
+                                                          .wins} | Losses: ${fighters
+                                                          .losses} | Draws: ${fighters
+                                                          .draws}',
+                                                      style: const TextStyle(
+                                                        fontSize: 14,
+                                                        fontWeight: FontWeight
+                                                            .bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -177,24 +195,25 @@ class _MyFightersState extends State<Fighters> {
   }
 
   void _filterFightersList(String query) {
-  if (query.isEmpty) {
-    setState(() {
-      fightersList = fightersListOrigin;
-    });
-  } else {
-    setState(() {
-      fightersList = fightersListOrigin.then((fightersData) => fightersData
-          .where((fighter) {
-            final String firstName = fighter.firstName;
-            final String lastName = fighter.lastName;
-            final String nickName = fighter.nickName;
+    if (query.isEmpty) {
+      setState(() {
+        fightersList = fightersListOrigin;
+      });
+    } else {
+      setState(() {
+        fightersList = fightersListOrigin.then((fightersData) =>
+            fightersData
+                .where((fighter) {
+              final String firstName = fighter.firstName;
+              final String lastName = fighter.lastName;
+              final String nickName = fighter.nickName;
 
-            return (firstName.toLowerCase().contains(query.toLowerCase())) ||
-                (lastName.toLowerCase().contains(query.toLowerCase())) ||
-                (nickName.toLowerCase().contains(query.toLowerCase()));
-          })
-          .toList());
-    });
+              return (firstName.toLowerCase().contains(query.toLowerCase())) ||
+                  (lastName.toLowerCase().contains(query.toLowerCase())) ||
+                  (nickName.toLowerCase().contains(query.toLowerCase()));
+            })
+                .toList());
+      });
+    }
   }
-}
 }

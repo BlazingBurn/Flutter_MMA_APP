@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mma_app/events.dart';
-import 'package:flutter_mma_app/fighter.dart';
+import 'package:flutter_mma_app/fighterDetails.dart';
 import 'package:flutter_mma_app/fighters.dart';
 import 'package:flutter_mma_app/home.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +12,7 @@ void main() {
 final _router = GoRouter(routes: [
   GoRoute(path: "/", builder: (context, state) => Home()),
   GoRoute(path: "/fighters", builder: (context, state) => Fighters()),
-  GoRoute(path: "/fighters/:fighterId", builder: (context, state) => Fighter(fighterId: state.pathParameters['fighterId']!,)),
+  GoRoute(path: "/fighters/:fighterId", builder: (context, state) => FighterDetails(fighterId: state.pathParameters['fighterId']!,)),
   GoRoute(path: "/events", builder: (context, state) => Events()),
 ]);
 
