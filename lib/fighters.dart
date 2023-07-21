@@ -70,7 +70,6 @@ class _MyFightersState extends State<Fighters> {
                   children: [
                     Icon(Icons.sports_mma,
                         color: Color.fromARGB(255, 198, 33, 21), size: 50),
-                    // Icône de gant de boxe
                     SizedBox(width: 8),
                     Text(
                       'Fighters', // En-tête "Fighters"
@@ -100,94 +99,85 @@ class _MyFightersState extends State<Fighters> {
                     final int fighterDraws = fighters['Draws'] as int? ?? 0;
 
                     return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  child: Center(
-                    child: MouseRegion(
-                      cursor: SystemMouseCursors.click, // Curseur de type 'cliquable'
-                      child: GestureDetector(
-                        onTap: () => GoRouter.of(context).go("/fighters/$fighterId"),
-                      child: Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/images/ali.webp',
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                      Center(
-                        child: Text(
-                          '${fighterFirstName ?? '-'} ${fighterLastName ?? '-'}',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 24,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Center(
-                        child: Text(
-                          fighterNickName ?? '',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 190, 27, 27),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: Text(
-                              'Wins: $fighterWins | Losses: $fighterLosses | Draws: $fighterDraws',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                      child: Center(
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click, // Curseur de type 'cliquable'
+                          child: GestureDetector(
+                            onTap: () => GoRouter.of(context).go("/fighters/$fighterId"),
+                            child: Card(
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center, // Centrer les éléments
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/ali.webp',
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    SizedBox(width: 1),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center, // Centrer les éléments
+                                        children: [
+                                          Center(
+                                            child: Text(
+                                              '${fighterFirstName ?? '-'} ${fighterLastName ?? '-'}',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 24,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Center(
+                                            child: Text(
+                                              fighterNickName ?? '',
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Color.fromARGB(255, 190, 27, 27),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Center(
+                                                child: Text(
+                                                  'Wins: $fighterWins | Losses: $fighterLosses | Draws: $fighterDraws',
+                                                  style: const TextStyle(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    ),
-  ),
-);
-
-                  }, 
+                    );
+                  },
                 ),
               ),
             ],
           );
         }
       },
-    );
-  }
-
-  void _onFighterCardTap(String fighterId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FighterDetails(fighterId: fighterId),
-      ),
     );
   }
 
