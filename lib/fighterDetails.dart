@@ -26,6 +26,7 @@ class _FighterDetailsState extends State<FighterDetails> {
   String formatDateTime(String dateString) {
     final dateTime = DateTime.parse(dateString);
     return DateFormat('EEE MMM d y').format(dateTime);
+    
   }
 
   Future<Map<String, dynamic>> _fetchFighterDetails() async {
@@ -124,76 +125,67 @@ class _FighterDetailsState extends State<FighterDetails> {
                   height: 100,
                 ),
                 const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10), // Ajout du padding horizontal
-                  child: Row(
-                    children: [
-                      const Expanded(
-                        child: Text(
-                          'FirstName:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          firstName,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      const Expanded(
-                        child: Text(
-                          'LastName:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          lastName,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10), // Ajout du padding horizontal
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Expanded(
-                        child: Text(
-                          'Nickname:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          nickname,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ),
-                      const Expanded(
-                        child: Text(
-                          'BirthDate:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          formatDateTime(birthDate),
-                          style: const TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+               Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 20),
+  child: Row(
+    children: [
+      Expanded(
+        child: Center(
+          child: Text(
+            'First name : $firstName',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ),
+      ),
+      Expanded(
+        child: Center(
+          child: Text(
+            'Last name : $lastName',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+const SizedBox(height: 10),
+Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 16),
+  child: Row(
+    children: [
+      Expanded(
+        child: Center(
+          child: Text(
+            'Nickname : $nickname',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Color.fromARGB(255, 188, 49, 40),
+            ),
+          ),
+        ),
+      ),
+      Expanded(
+        child: Center(
+          child: Text(
+            'Birth date : ${formatDateTime(birthDate)}',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+
                 const SizedBox(height: 10),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
@@ -205,11 +197,11 @@ class _FighterDetailsState extends State<FighterDetails> {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 8), // Ajout du padding horizontal
                           child: Text(
                             'Wins: $wins',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
@@ -218,11 +210,11 @@ class _FighterDetailsState extends State<FighterDetails> {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 8), // Ajout du padding horizontal
                           child: Text(
                             'Losses: $losses',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
@@ -231,11 +223,11 @@ class _FighterDetailsState extends State<FighterDetails> {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 8), // Ajout du padding horizontal
                           child: Text(
                             'Draws: $draws',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
@@ -249,11 +241,11 @@ class _FighterDetailsState extends State<FighterDetails> {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 8), // Ajout du padding horizontal
                           child: Text(
                             'Height: $height',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
@@ -262,11 +254,11 @@ class _FighterDetailsState extends State<FighterDetails> {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 8), // Ajout du padding horizontal
                           child: Text(
                             'Weight: $weight',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
@@ -275,11 +267,11 @@ class _FighterDetailsState extends State<FighterDetails> {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 8), // Ajout du padding horizontal
                           child: Text(
-                            'WeightClass: $weightClass',
-                            style: TextStyle(
+                            'Weight class: $weightClass',
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
@@ -304,11 +296,11 @@ class _FighterDetailsState extends State<FighterDetails> {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 8), // Ajout du padding horizontal
                           child: Text(
                             'Techn. KO: $technicalKnockouts',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
@@ -317,11 +309,11 @@ class _FighterDetailsState extends State<FighterDetails> {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 8), // Ajout du padding horizontal
                           child: Text(
                             'Techn. KO Losses: $technicalKnockoutLosses',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
@@ -335,11 +327,11 @@ class _FighterDetailsState extends State<FighterDetails> {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 10), // Ajout du padding horizontal
                           child: Text(
                             'Submissions: $submissions',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
@@ -348,11 +340,11 @@ class _FighterDetailsState extends State<FighterDetails> {
                     Expanded(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 8), // Ajout du padding horizontal
                           child: Text(
                             'Submissions Losses: $submissionLosses',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                         ),
@@ -367,18 +359,17 @@ class _FighterDetailsState extends State<FighterDetails> {
                 ),
                 const SizedBox(height: 10),
                 const SizedBox(height: 20),
-                _buildCircleData('TitleWins', titleWins as double),
-                _buildCircleData('TitleLosses', titleLosses as double),
-                _buildCircleData('TitleDraws', titleDraws as double),
+                _buildCircleData('Title Wins ', titleWins as double),
+                _buildCircleData('Title Losses ', titleLosses as double),
+                _buildCircleData('Title Draws ', titleDraws as double),
                 _buildCircleData(
-                    'SigStrikesLandedPerMinute', sigStrikesLandedPerMinute),
-                _buildCircleData('SigStrikeAccuracy', sigStrikeAccuracy),
-                _buildCircleData('TakedownAverage', takedownAverage),
-                _buildCircleData('SubmissionAverage', submissionAverage),
-                _buildCircleData('KnockoutPercentage', knockoutPercentage),
-                _buildCircleData(
-                    'TechnicalKnockoutPercentage', technicalKnockoutPercentage),
-                _buildCircleData('DecisionPercentage', decisionPercentage),
+                    'Strikes landed/mn ', sigStrikesLandedPerMinute),
+                _buildCircleData('Strike accuracy ', sigStrikeAccuracy),
+                _buildCircleData('Takedown average ', takedownAverage),
+                _buildCircleData('Submission average ', submissionAverage),
+                _buildCircleData('Knockout % ', knockoutPercentage),
+                _buildCircleData('Techn. KO % ', technicalKnockoutPercentage),
+                _buildCircleData('Decision % ', decisionPercentage),
               ],
             ),
           );
