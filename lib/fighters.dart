@@ -123,7 +123,7 @@ class _MyFightersState extends State<Fighters> {
                                     child: Row(
                                       children: [
                                         Image.asset(
-                                          'assets/images/ali.webp',
+                                          'assets/images/marc.png',
                                           width: 100,
                                           height: 100,
                                           fit: BoxFit.cover,

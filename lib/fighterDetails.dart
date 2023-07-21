@@ -120,9 +120,9 @@ class _FighterDetailsState extends State<FighterDetails> {
                 ),
                 const SizedBox(height: 20),
                 Image.asset(
-                  'assets/images/ali.webp', // Image "ali.png"
-                  width: 100,
-                  height: 100,
+                  'assets/images/marc.png', // Image "ali.png"
+                  width: 250,
+                  height: 250,
                 ),
                 const SizedBox(height: 20),
                Padding(
