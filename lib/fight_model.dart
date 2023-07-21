@@ -33,22 +33,22 @@ class FightModel {
 
   factory FightModel.fromJson(Map<String, dynamic> json) {
     List<dynamic> fightersJsonList = json['Fighters'];
-    List<FighterEventModel> fightersList =
-    fightersJsonList.map((json) => FighterEventModel.fromJson(json)).toList();
+    List<FighterEventModel> fightersList = fightersJsonList?.map((json) => FighterEventModel.fromJson(json))?.toList() ?? [];
+
 
     return FightModel(
-      fightId: json['FightId'],
-      order: json['Order'],
-      status: json['Status'],
-      weightClass: json['WeightClass'],
-      cardSegment: json['CardSegment'],
-      referee: json['Referee'],
-      rounds: json['Rounds'],
-      resultClock: json['ResultClock'],
-      resultRound: json['ResultRound'],
-      resultType: json['ResultType'],
-      winnerId: json['WinnerId'],
-      active: json['Active'],
+      fightId: json['FightId'] ?? 0,
+      order: json['Order'] ?? 0,
+      status: json['Status'] ?? '',
+      weightClass: json['WeightClass'] ?? '',
+      cardSegment: json['CardSegment'] ?? '',
+      referee: json['Referee'] ?? '',
+      rounds: json['Rounds'] ?? 0,
+      resultClock: json['ResultClock'] ?? 0,
+      resultRound: json['ResultRound'] ?? 0,
+      resultType: json['ResultType'] ?? '',
+      winnerId: json['WinnerId'] ?? 0,
+      active: json['Active'] ?? false,
       fighters: fightersList,
     );
   }

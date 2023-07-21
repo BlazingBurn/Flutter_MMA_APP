@@ -25,16 +25,16 @@ class FighterEventModel {
 
   factory FighterEventModel.fromJson(Map<String, dynamic> json) {
     return FighterEventModel(
-      fighterId: json['FighterId'],
-      firstName: json['FirstName'],
-      lastName: json['LastName'],
-      preFightWins: json['PreFightWins'],
-      preFightLosses: json['PreFightLosses'],
-      preFightDraws: json['PreFightDraws'],
-      preFightNoContests: json['PreFightNoContests'],
-      winner: json['Winner'],
-      moneyline: json['Moneyline'],
-      active: json['Active'],
+      fighterId: json['FighterId'] ?? 0,
+      firstName: json['FirstName'] ?? '',
+      lastName: json['LastName'] ?? '',
+      preFightWins: json['PreFightWins'] ?? 0,
+      preFightLosses: json['PreFightLosses'] ?? 0,
+      preFightDraws: json['PreFightDraws'] ?? 0,
+      preFightNoContests: json['PreFightNoContests'] ?? 0,
+      winner: json['Winner'] ?? false,
+      moneyline: json['Moneyline'] ?? 0,
+      active: json['Active'] ?? false,
     );
   }
 }

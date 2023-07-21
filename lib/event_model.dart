@@ -4,7 +4,7 @@ import 'package:flutter_mma_app/event_detail_model.dart';
 import 'package:intl/intl.dart';
 
 class EventModel {
-  int eventId;
+  int? eventId;
   String eventName;
   String eventDateTime;
 

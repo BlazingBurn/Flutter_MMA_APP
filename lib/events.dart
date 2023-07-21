@@ -121,7 +121,7 @@ class _EventsState extends State<Events> {
                         child: EventCard(
                           event: event!,
                           isExpanded: isEventSelected,
-                          onToggle: () => _toggleEventDetails(event!.eventId),
+                          onToggle: () => _toggleEventDetails(event?.eventId ?? 0),
                           eventDetails: eventDetailsMap[event?.eventId],
                         ),
                       );
@@ -157,7 +157,7 @@ class EventCard extends StatelessWidget {
         children: [
           ListTile(
             title: Text(event.eventName),
-            subtitle: Text('EventID: ${event.eventId}\nDate/Time: ${event.eventDateTime}'),
+            subtitle: Text('EventID: ${event.eventId != null ? event.eventId! : ''}\nDate/Time: ${event.eventDateTime}'),
             onTap: onToggle,
           ),
           if (isExpanded && eventDetails != null)
