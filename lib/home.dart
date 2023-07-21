@@ -24,9 +24,9 @@ class Home extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
                 Image.asset(
-                  'assets/images/mc.jpg', // Chemin de l'image
+                  'assets/images/mvsc.jpg', // Chemin de l'image
                   fit: BoxFit.fill,
-                  height: 250,
+                  height: 340,
                   // Ajuster la taille de l'image pour couvrir toute la largeur
                 ),
             const SizedBox(height: 30), // Espacement entre l'image et le reste en bas

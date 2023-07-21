@@ -362,8 +362,7 @@ Padding(
                 _buildCircleData('Title Wins ', titleWins as double),
                 _buildCircleData('Title Losses ', titleLosses as double),
                 _buildCircleData('Title Draws ', titleDraws as double),
-                _buildCircleData(
-                    'Strikes landed/mn ', sigStrikesLandedPerMinute),
+                _buildCircleData('Strikes landed/mn ', sigStrikesLandedPerMinute),
                 _buildCircleData('Strike accuracy ', sigStrikeAccuracy),
                 _buildCircleData('Takedown average ', takedownAverage),
                 _buildCircleData('Submission average ', submissionAverage),
