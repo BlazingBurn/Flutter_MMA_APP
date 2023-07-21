@@ -22,7 +22,8 @@ class _MyFightersState extends State<Fighters> {
   @override
   void initState() {
     super.initState();
-    fightersList = _fetchEventData();
+    fightersListOrigin = _fetchEventData();
+    fightersList = fightersListOrigin;
   }
 
   Future<List<FighterModel>> _fetchEventData() async {
