@@ -108,6 +108,24 @@ class _EventsState extends State<Events> {
             final eventsData = snapshot.data;
             return Column(
               children: [
+                Column(
+                  children: [
+                    const Text(
+                      'MAIN EVENT', // En-tête "Fighters"
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 190, 27, 27),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Image.asset(
+                      'assets/images/main_event.jpg', // Chemin de l'image
+                      fit: BoxFit.fill,
+                      height: 250,
+                    ),
+                  ],
+                ),
                 Expanded(
                   child:
                   ListView.builder(
