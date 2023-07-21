@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mma_app/scaffoldGeneral.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -6,7 +7,7 @@ import 'dart:convert';
 class FighterDetails extends StatefulWidget {
   final String fighterId;
 
-  FighterDetails({required this.fighterId});
+  const FighterDetails({super.key, required this.fighterId});
 
   @override
   _FighterDetailsState createState() => _FighterDetailsState();
@@ -35,15 +36,19 @@ class _FighterDetailsState extends State<FighterDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Détails du Fighter'),
-      ),
-      body: FutureBuilder<Map<String, dynamic>>(
+    return ScaffoldGeneral(
+      redirection: "/fighters",
+      widget: _fighterDetails()
+      );
+    }
+
+    // title: Text('Détails du Fighter'),
+  Widget _fighterDetails() {
+      return FutureBuilder<Map<String, dynamic>>(
         future: fighterDetails,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -80,62 +85,61 @@ class _FighterDetailsState extends State<FighterDetails> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Text('FirstName: $firstName'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('LastName: $lastName'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('Nickname: $nickname'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('Wins: $wins'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('Losses: $losses'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('Draws: $draws'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('BirthDate: $birthDate'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('Height: $height'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('Weight: $weight'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('WeightClass: $weightClass'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('TechnicalKnockouts: $technicalKnockouts'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('TechnicalKnockoutLosses: $technicalKnockoutLosses'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('Submissions: $submissions'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('SubmissionLosses: $submissionLosses'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('TitleWins: $titleWins'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('TitleLosses: $titleLosses'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('TitleDraws: $titleDraws'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('SigStrikesLandedPerMinute: $sigStrikesLandedPerMinute'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('SigStrikeAccuracy: $sigStrikeAccuracy'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('TakedownAverage: $takedownAverage'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('SubmissionAverage: $submissionAverage'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('KnockoutPercentage: $knockoutPercentage'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('TechnicalKnockoutPercentage: $technicalKnockoutPercentage'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text('DecisionPercentage: $decisionPercentage'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                 
                 ],
               ),
             );
           }
         },
-      ),
-    );
+      );
   }
 }

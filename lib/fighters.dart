@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mma_app/scaffoldGeneral.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'fighterDetails.dart';
@@ -104,9 +105,7 @@ class _MyFightersState extends State<Fighters> {
                     child: MouseRegion(
                       cursor: SystemMouseCursors.click, // Curseur de type 'cliquable'
                       child: GestureDetector(
-                        onTap: () {
-                          _onFighterCardTap(fighterId);
-                        },
+                        onTap: () => GoRouter.of(context).go("/fighters/$fighterId"),
                       child: Card(
                         elevation: 4,
                         shape: RoundedRectangleBorder(
