@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mma_app/event_detail_model.dart';
+import 'package:flutter_mma_app/event_model.dart';
 import 'package:flutter_mma_app/scaffoldGeneral.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -12,31 +14,32 @@ class Events extends StatefulWidget {
 }
 
 class _EventsState extends State<Events> {
-  List<dynamic> eventData = [];
+  late Future<List<EventModel>> eventList;
   int? selectedEventId;
-  Map<int, List<dynamic>> eventDetailsMap = {};
+  Map<int, List<EventDetailModel>> eventDetailsMap = {};
 
   @override
   void initState() {
     super.initState();
-    _fetchEventData();
+    eventList = _fetchEventData();
   }
 
-  Future<void> _fetchEventData() async {
+  Future<List<EventModel>> _fetchEventData() async {
     final response = await http.get(
       Uri.parse(
           'https://api.sportsdata.io/v3/mma/scores/json/Schedule/UFC/2023?key=ec5838ef36b54cccae0a603380c1544a'),
     );
     if (response.statusCode == 200) {
-      setState(() {
-        eventData = jsonDecode(response.body);
-      });
+      final List<dynamic> eventData = jsonDecode(response.body);
+      List<EventModel> eventList = eventData.map((json) =>
+          EventModel.fromJson(json)).toList();
+      return eventList;
     } else {
       throw Exception('Failed to load data');
     }
   }
 
-  Future<List<dynamic>> _fetchEventDetails(int eventId) async {
+  Future<List<EventDetailModel>> _fetchEventDetails(int eventId) async {
     final response = await http.get(
       Uri.parse(
           'https://api.sportsdata.io/v3/mma/scores/json/Event/$eventId?key=ec5838ef36b54cccae0a603380c1544a'),
@@ -44,13 +47,15 @@ class _EventsState extends State<Events> {
     if (response.statusCode == 200) {
       final dynamic decodedData = jsonDecode(response.body);
       if (decodedData is List<dynamic>) {
-        return decodedData;
+        List<EventDetailModel> eventDetails = decodedData.map((json) => EventDetailModel.fromJson(json)).toList();
+        return eventDetails;
       } else if (decodedData is Map<String, dynamic>) {
         // Wrap the map inside a list to match the expected format
-        return [decodedData];
+        return [EventDetailModel.fromJson(decodedData)];
       } else {
         print(
-            'Invalid data format. Expected List<dynamic> or Map<String, dynamic>, but got ${decodedData.runtimeType}');
+            'Invalid data format. Expected List<dynamic> or Map<String, dynamic>, but got ${decodedData
+                .runtimeType}');
         throw Exception('Invalid event details data format');
       }
     } else {
@@ -88,43 +93,58 @@ class _EventsState extends State<Events> {
   }
 
   Widget _events(BuildContext context) {
-    return ListView.builder(
-      itemCount: eventData.length,
-      itemBuilder: (context, index) {
-        final event = eventData[index];
-        final eventId = event['EventId'];
-        final eventName = event['Name'];
-        final eventDateTimeString = event['DateTime'];
-        final isEventSelected = selectedEventId == eventId;
+    return FutureBuilder<List<EventModel>>(
+        future: eventList,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            final eventsData = snapshot.data;
+            return Column(
+              children: [
+                Expanded(
+                  child:
+                  ListView.builder(
+                    itemCount: eventsData?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      final event = eventsData?[index];
+                      final isEventSelected = selectedEventId == event?.eventId;
 
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: EventCard(
-            eventId: eventId,
-            eventName: eventName,
-            eventDateTime: formatDateTime(eventDateTimeString),
-            isExpanded: isEventSelected,
-            onToggle: () => _toggleEventDetails(eventId),
-            eventDetails: eventDetailsMap[eventId],
-          ),
-        );
-      },
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: EventCard(
+                          event: event!,
+                          isExpanded: isEventSelected,
+                          onToggle: () => _toggleEventDetails(event!.eventId),
+                          eventDetails: eventDetailsMap[event?.eventId],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            );
+          }
+        }
     );
   }
 }
 
+
 class EventCard extends StatelessWidget {
-  final int eventId;
-  final String eventName;
-  final String eventDateTime;
+  final EventModel event;
   final bool isExpanded;
   final VoidCallback onToggle;
-  final List<dynamic>? eventDetails;
+  final List<EventDetailModel>? eventDetails;
 
   const EventCard({
-    required this.eventId,
-    required this.eventName,
-    required this.eventDateTime,
+    required this.event,
     required this.isExpanded,
     required this.onToggle,
     this.eventDetails,
@@ -136,24 +156,24 @@ class EventCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            title: Text(eventName),
-            subtitle: Text('EventID: $eventId\nDate/Time: $eventDateTime'),
+            title: Text(event.eventName),
+            subtitle: Text('EventID: ${event.eventId}\nDate/Time: ${event.eventDateTime}'),
             onTap: onToggle,
           ),
           if (isExpanded && eventDetails != null)
             Column(
-              children: eventDetails![0]['Fights'].map<Widget>((fight) {
-                if (fight['Fighters'].length != 2) {
+              children: eventDetails![0].fights.map<Widget>((fight) {
+                if (fight.fighters.length != 2) {
                   print('Invalid fight data: ${fight.toString()}');
                   return SizedBox.shrink(); // Ignore invalid fight data
                 }
-                final fighter1 = fight['Fighters'][0];
-                final fighter2 = fight['Fighters'][1];
+                final fighter1 = fight.fighters[0];
+                final fighter2 = fight.fighters[1];
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Text('FightID: ${fight['FightId']}'),
+                      Text('FightID: ${fight.fightId}'),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -161,11 +181,11 @@ class EventCard extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  '${fighter1['FirstName']} ${fighter1['LastName']}',
+                                  '${fighter1.firstName} ${fighter1.lastName}',
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  '${fighter1['PreFightWins']} - ${fighter1['PreFightLosses']} - ${fighter1['PreFightDraws']} - ${fighter1['PreFightNoContests']}',
+                                  '${fighter1.preFightWins} - ${fighter1.preFightLosses} - ${fighter1.preFightDraws} - ${fighter1.preFightNoContests}',
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -182,11 +202,11 @@ class EventCard extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  '${fighter2['FirstName']} ${fighter2['LastName']}',
+                                  '${fighter2.firstName} ${fighter2.lastName}',
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  '${fighter2['PreFightWins']} - ${fighter2['PreFightLosses']} - ${fighter2['PreFightDraws']} - ${fighter2['PreFightNoContests']}',
+                                  '${fighter2.preFightWins} - ${fighter2.preFightLosses} - ${fighter2.preFightDraws} - ${fighter2.preFightNoContests}',
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -195,7 +215,7 @@ class EventCard extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        'Winner: ${fighter1['Winner'] == true ? '${fighter1['FirstName']} ${fighter1['LastName']}' : (fighter2['Winner'] == true ? '${fighter2['FirstName']} ${fighter2['LastName']}' : 'No winner yet')}',
+                        'Winner: ${fighter1.winner == true ? '${fighter1.firstName} ${fighter1.lastName}' : (fighter2.winner == true ? '${fighter2.firstName} ${fighter2.lastName}' : 'No winner yet')}',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Divider(), // Le Divider pour séparer les combats
